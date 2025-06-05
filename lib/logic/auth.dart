@@ -42,3 +42,30 @@ Future<RegisterReturnValues> registerUser(UserModel userRegistering) async {
     }
   }
 }
+
+enum LoginReturnValues {
+  SUCCESS,
+  NO_VERIFICATION,
+  INVALID_VALUES,
+  UNKNOWN_ERROR,
+}
+
+Future<LoginReturnValues> loginUser(String email, String password) async {
+  try {
+    final AuthResponse response = await supabase.auth.signInWithPassword(
+      email: email,
+      password: password,
+    );
+    return LoginReturnValues.SUCCESS;
+  } on AuthException catch (e) {
+    if (e.message == 'Invalid login credentials') {
+      return LoginReturnValues.INVALID_VALUES;
+    } else if (e.message == 'Email not confirmed') {
+      return LoginReturnValues.NO_VERIFICATION;
+    }
+    return LoginReturnValues.UNKNOWN_ERROR;
+  } catch (e) {
+    // Cualquier otro error inesperado
+    return LoginReturnValues.UNKNOWN_ERROR;
+  }
+}
