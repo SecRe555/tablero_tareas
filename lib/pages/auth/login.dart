@@ -33,13 +33,16 @@ class _LoginPageState extends State<LoginPage> {
                     spacing: 25,
                     children: [
                       TextFormField(
-                        decoration: InputDecoration(label: Text('Usuario')),
+                        decoration: InputDecoration(
+                          label: Text('Correo electronico'),
+                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Rellene este campo';
                           }
                           return null;
                         },
+                        keyboardType: TextInputType.emailAddress,
                       ),
                       TextFormField(
                         decoration: InputDecoration(label: Text('Contraseña')),

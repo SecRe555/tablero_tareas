@@ -9,6 +9,7 @@ class MainLayout extends StatelessWidget {
 
   final tabs = [
     {'path': '/', 'icon': Icons.access_time_outlined, 'label': 'Pendientes'},
+    {'path': '/realizadas', 'icon': Icons.check, 'label': 'Realizadas'},
     {'path': '/materias', 'icon': Icons.grid_view, 'label': 'Materias'},
     {'path': '/grupos', 'icon': Icons.groups, 'label': 'Grupos'},
   ];

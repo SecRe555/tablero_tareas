@@ -16,6 +16,10 @@ final router = GoRouter(
           builder: (context, state) => Center(child: Text("Index")),
         ),
         GoRoute(
+          path: "/realizadas",
+          builder: (context, state) => Center(child: Text("Realizadas")),
+        ),
+        GoRoute(
           path: "/materias",
           builder: (context, state) => Center(child: Text("materias")),
         ),
