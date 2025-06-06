@@ -1,4 +1,5 @@
 ---
+import VerifyMessage from "../components/VerifyMessage";
 import Layout from "../layouts/Layout.astro";
 
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
@@ -6,68 +7,5 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
 ---
 
 <Layout>
-  <div id="resultado"></div>
-
-  <script type="module" define:vars={{ supabaseUrl, supabaseAnonKey }}>
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get("code");
-    const error = params.get("error");
-    const errorCode = params.get("error_code");
-    const errorDesc = params.get("error_description");
-
-    const div = document.getElementById("resultado");
-
-    if (!error) {
-      if (code) {
-        div.innerHTML = `
-        <h1 class="ok">✅ Cuenta verificada</h1>
-        <p>Puedes cerrar esta ventana y volver a la app.</p>
-      `;
-      } else {
-        div.innerHTML = `
-        <h1 class="ok">Olam</h1>
-        <p>Ke ta chendo?</p>
-      `;
-      }
-    } else {
-      div.innerHTML = `
-        <h1 class="error">❌ Verificación fallida</h1>
-        <p><strong>Error:</strong> ${errorCode}</p>
-        <p>${decodeURIComponent(errorDesc)}</p>
-        <button id="reenviar-btn">Reenviar verificación.</button>
-      `;
-    }
-    const url = new URL(window.location.href);
-
-    // Esto elimina todos los search params (code, error, etc)
-    url.search = "";
-
-    // Actualiza la URL en el navegador sin recargar
-    window.history.replaceState({}, document.title, url.toString());
-
-    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
-    const supabase = createClient(`${supabaseUrl}`, `${supabaseAnonKey}`);
-
-    const resendButton = document.getElementById("reenviar-btn");
-    if (resendButton) {
-      resendButton.addEventListener("click", async () => {
-        // Aquí deberías pedir el correo de nuevo, o haberlo guardado antes
-        const email = prompt("Ingresa tu correo para reenviar el enlace:");
-
-        if (email) {
-          const { error } = await supabase.auth.resend({
-            type: "signup",
-            email,
-          });
-
-          if (error) {
-            alert("Error al reenviar el correo: " + error.message);
-          } else {
-            alert("Correo de verificación reenviado con éxito.");
-          }
-        }
-      });
-    }
-  </script>
+  <VerifyMessage client:load supabaseUrl={supabaseUrl} supabaseAnonKey={supabaseAnonKey} />
 </Layout>
