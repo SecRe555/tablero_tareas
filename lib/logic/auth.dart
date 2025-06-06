@@ -69,3 +69,51 @@ Future<LoginReturnValues> loginUser(String email, String password) async {
     return LoginReturnValues.UNKNOWN_ERROR;
   }
 }
+
+enum SignOutReturnValues { SUCCESS, ERROR }
+
+Future<SignOutReturnValues> signOutUser() async {
+  try {
+    if (supabase.auth.currentSession != null) {
+      await supabase.auth.signOut();
+    }
+    return SignOutReturnValues.SUCCESS;
+  } catch (e) {
+    return SignOutReturnValues.ERROR;
+  }
+}
+
+enum RecoveryPasswordReturnValue {
+  SUCCESS,
+  INVALID_USER,
+  EMAIL_NOT_CONFIRMED,
+  INVALID_EMAIL,
+  RATE_LIMIT_EXCEEDED,
+  NETWORK_ERROR,
+  UNKNOWN_ERROR,
+}
+
+Future<RecoveryPasswordReturnValue> recoveryPassword(String email) async {
+  try {
+    await supabase.auth.resetPasswordForEmail(email);
+    return RecoveryPasswordReturnValue.SUCCESS;
+  } on AuthException catch (e) {
+    final msg = e.message.toLowerCase();
+
+    if (msg.contains('user not found')) {
+      return RecoveryPasswordReturnValue.INVALID_USER;
+    } else if (msg.contains('email not confirmed')) {
+      return RecoveryPasswordReturnValue.EMAIL_NOT_CONFIRMED;
+    } else if (msg.contains('invalid email')) {
+      return RecoveryPasswordReturnValue.INVALID_EMAIL;
+    } else if (msg.contains('too many requests') ||
+        msg.contains('rate limit')) {
+      return RecoveryPasswordReturnValue.RATE_LIMIT_EXCEEDED;
+    } else {
+      return RecoveryPasswordReturnValue.UNKNOWN_ERROR;
+    }
+  } catch (e) {
+    // Errores de red u otros imprevistos
+    return RecoveryPasswordReturnValue.NETWORK_ERROR;
+  }
+}

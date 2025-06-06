@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               TextButton(
                 child: Text('¿Olvidaste tu contraseña?'),
-                onPressed: () {},
+                onPressed: () => router.push('/recovery-password'),
               ),
               TextButton(
                 child: Text('Registrate'),
