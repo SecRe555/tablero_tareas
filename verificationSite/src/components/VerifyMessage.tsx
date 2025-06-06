@@ -18,12 +18,6 @@ export default function VerifyMessage(props: Props) {
     window.history.replaceState({}, document.title, url.toString());
   };
 
-  // createEffect(() => {
-  //   const url = new URL(window.location.href);
-  //   url.search = "";
-  //   window.history.replaceState({}, document.title, url.toString());
-  // }, content());
-
   onMount(() => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
