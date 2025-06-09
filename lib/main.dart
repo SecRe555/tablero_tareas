@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tablero_tareas/constants/supabase.dart';
 import 'package:tablero_tareas/router.dart';
+import 'package:tablero_tareas/states/user_controller.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +16,8 @@ Future<void> main() async {
     anonKey: dotenv.env['SUPABASE_ANON_KEY'] as String,
   );
   supabase = Supabase.instance.client;
+
+  final UserController userController = Get.put(UserController());
 
   runApp(const MyApp());
 }

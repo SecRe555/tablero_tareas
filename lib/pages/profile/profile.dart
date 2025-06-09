@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tablero_tareas/logic/auth.dart';
 import 'package:tablero_tareas/router.dart';
+import 'package:tablero_tareas/states/user_controller.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -12,8 +14,11 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+    final user = Get.find<UserController>().user.value;
+
     return Scaffold(
       appBar: AppBar(
+        title: Text('${user.name} ${user.lastName}'),
         actions: [IconButton(icon: Icon(Icons.logout), onPressed: _signOut)],
         actionsPadding: EdgeInsets.only(right: 10),
       ),

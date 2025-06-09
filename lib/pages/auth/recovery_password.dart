@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tablero_tareas/logic/auth.dart';
+import 'package:tablero_tareas/router.dart';
+import 'package:tablero_tareas/utils/show_dialogs.dart';
 
 class RecoveryPasswordPage extends StatelessWidget {
   RecoveryPasswordPage({super.key});
@@ -51,19 +53,19 @@ class RecoveryPasswordPage extends StatelessWidget {
 
   Future<void> _validateAndSubmit(BuildContext context) async {
     if (_recoveryPasswordFormKey.currentState!.validate()) {
+      showLoadingDialog(context: context);
       final result = await recoveryPassword(_emailController.text);
+      router.pop();
       switch (result) {
         case RecoveryPasswordReturnValue.SUCCESS:
         case RecoveryPasswordReturnValue.INVALID_USER:
         case RecoveryPasswordReturnValue.INVALID_EMAIL:
         case RecoveryPasswordReturnValue.EMAIL_NOT_CONFIRMED:
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
+          showAcceptDialog(
+            context: context,
+            text:
                 'Si el correo existe. Se ha mandado un correo de confirmacion',
-              ),
-              duration: Duration(seconds: 3),
-            ),
+            onConfirm: () => router.go('/login'),
           );
           break;
         case RecoveryPasswordReturnValue.RATE_LIMIT_EXCEEDED:

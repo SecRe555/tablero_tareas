@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tablero_tareas/logic/auth.dart';
 import 'package:tablero_tareas/router.dart';
+import 'package:tablero_tareas/utils/show_dialogs.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({super.key});
@@ -86,19 +86,20 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _validateAndLogin() async {
     if (_loginFormKey.currentState!.validate()) {
+      showLoadingDialog(context: context, text: 'Iniciando sesión');
       final result = await loginUser(
         _emailController.text,
         _passwordController.text,
       );
+      router.pop();
       switch (result) {
         case LoginReturnValues.SUCCESS:
-          // Guardar user y session
-          context.go('/');
+          router.go('/');
           break;
         case LoginReturnValues.NO_VERIFICATION:
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Falta verificación de correo'),
+              content: Text('Falta la verificación de su correo'),
               duration: Duration(seconds: 3),
             ),
           );

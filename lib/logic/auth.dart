@@ -1,6 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tablero_tareas/constants/supabase.dart';
-import 'package:tablero_tareas/models/user.dart';
+import 'package:tablero_tareas/models/user_model.dart';
 
 enum RegisterReturnValues {
   SUCCESS, // Sin errores
@@ -11,7 +11,9 @@ enum RegisterReturnValues {
   UNKNOWN_ERROR, // Cualquier otro error no categorizado
 }
 
-Future<RegisterReturnValues> registerUser(UserModel userRegistering) async {
+Future<RegisterReturnValues> registerUser(
+  UserRegisterModel userRegistering,
+) async {
   try {
     final AuthResponse response = await supabase.auth.signUp(
       email: userRegistering.email,

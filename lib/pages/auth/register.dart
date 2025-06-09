@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:tablero_tareas/logic/auth.dart';
-import 'package:tablero_tareas/models/user.dart';
+import 'package:tablero_tareas/models/user_model.dart';
+import 'package:tablero_tareas/router.dart';
+import 'package:tablero_tareas/utils/show_dialogs.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -176,7 +179,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<void> _validateAndSubmit() async {
     if (_registerFormKey.currentState!.validate()) {
-      final userRegistering = UserModel(
+      final userRegistering = UserRegisterModel(
         username: _usernameController.text,
         email: _emailController.text,
         name: _nameController.text,
@@ -184,15 +187,16 @@ class _RegisterPageState extends State<RegisterPage> {
         password: _passwordController.text,
         confirmPassword: _confirmPasswordController.text,
       );
-
+      showLoadingDialog(context: context, text: 'Registrando usuario');
       final result = await registerUser(userRegistering);
+      router.pop();
       switch (result) {
         case RegisterReturnValues.SUCCESS:
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Usuario registrado'),
-              duration: Duration(seconds: 3),
-            ),
+          showAcceptDialog(
+            context: context,
+            title: 'Registro exitoso',
+            text: 'Se le ha enviado un email para confirmar su correo',
+            onConfirm: () => context.go('/login'),
           );
           break;
         case RegisterReturnValues.USERNAME_TAKEN:
