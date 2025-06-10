@@ -36,7 +36,10 @@ class MainLayout extends StatelessWidget {
             borderRadius: BorderRadius.circular(100),
             onTap: () => router.push('/profile'),
             child: CircleAvatar(
-              backgroundImage: NetworkImage(user.profilePhoto as String),
+              backgroundImage:
+                  user.profilePhoto == null
+                      ? null
+                      : NetworkImage(user.profilePhoto as String),
               child:
                   user.profilePhoto == null
                       ? Text('${user.name[0]}${user.lastName[0]}')

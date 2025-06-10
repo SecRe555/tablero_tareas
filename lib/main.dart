@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tablero_tareas/constants/supabase.dart';
 import 'package:tablero_tareas/router.dart';
+import 'package:tablero_tareas/states/theme_controller.dart';
 import 'package:tablero_tareas/states/user_controller.dart';
 
 Future<void> main() async {
@@ -18,6 +19,7 @@ Future<void> main() async {
   supabase = Supabase.instance.client;
 
   final UserController userController = Get.put(UserController());
+  final ThemeController themeController = Get.put(ThemeController());
 
   runApp(const MyApp());
 }
@@ -28,15 +30,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: "Tablero de tareas",
-      routerConfig: router,
-      localizationsDelegates: [
-        GlobalWidgetsLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: [Locale('es')],
+    final themeController = Get.find<ThemeController>();
+
+    return Obx(
+      () => MaterialApp.router(
+        title: "Tablero de tareas",
+        theme: themeController.lightTheme,
+        darkTheme: themeController.darkTheme,
+        themeMode: themeController.themeMode,
+        routerConfig: router,
+        localizationsDelegates: [
+          GlobalWidgetsLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [Locale('es')],
+      ),
     );
   }
 }
