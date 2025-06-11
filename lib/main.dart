@@ -30,14 +30,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final themeController = Get.find<ThemeController>();
+    final theme = Get.find<ThemeController>();
 
     return Obx(
       () => MaterialApp.router(
         title: "Tablero de tareas",
-        theme: themeController.lightTheme,
-        darkTheme: themeController.darkTheme,
-        themeMode: themeController.themeMode,
+        theme: theme.lightTheme.value,
+        darkTheme: theme.darkTheme.value,
+        themeMode: theme.themeMode,
         routerConfig: router,
         localizationsDelegates: [
           GlobalWidgetsLocalizations.delegate,

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -36,30 +37,58 @@ class MainLayout extends StatelessWidget {
             borderRadius: BorderRadius.circular(100),
             onTap: () => router.push('/profile'),
             child: CircleAvatar(
-              backgroundImage:
-                  user.profilePhoto == null
-                      ? null
-                      : NetworkImage(user.profilePhoto as String),
+              radius: 25,
+              backgroundColor:
+                  Colors.grey[200], // Fondo para cuando no hay imagen
               child:
                   user.profilePhoto == null
                       ? Text('${user.name[0]}${user.lastName[0]}')
-                      : null,
+                      : ClipOval(
+                        child: CachedNetworkImage(
+                          imageUrl: user.profilePhoto!,
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                          placeholder:
+                              (context, url) => Image.asset(
+                                'assets/images/kirby-loading.gif',
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                              ),
+                          errorWidget:
+                              (context, url, error) => Image.asset(
+                                'assets/images/kirby-error.gif',
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                              ),
+                        ),
+                      ),
             ),
           ),
         ],
         actionsPadding: EdgeInsets.only(right: 15),
       ),
       body: child,
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(8.0),
+        color: Theme.of(context).colorScheme.primary,
         child: GNav(
           selectedIndex: index,
+          color: Theme.of(context).colorScheme.surface,
+          tabBackgroundColor: Theme.of(context).colorScheme.surface,
+          activeColor: Theme.of(context).colorScheme.primary,
+          gap: 10,
           tabs:
               tabs
                   .map(
                     (tab) => GButton(
                       icon: tab['icon'] as IconData,
-                      text: tab['label'] as String,
+                      text:
+                          MediaQuery.of(context).size.width > 400.0
+                              ? tab['label'] as String
+                              : '',
                     ),
                   )
                   .toList(),

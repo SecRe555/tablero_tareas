@@ -48,7 +48,7 @@ class ColorTheme {
 
 const Map<CustomColor, ColorTheme> _colorThemes = {
   CustomColor.red: ColorTheme(
-    light: ColorShades(light: 0xFFEF4444, main: 0xFFB91C1C, dark: 0xFF7F1D1D),
+    light: ColorShades(light: 0xFFfef2f2, main: 0xFFB91C1C, dark: 0xFF7F1D1D),
     dark: ColorShades(light: 0xFFFEE2E2, main: 0xFFFF6467, dark: 0xFFEF4444),
   ),
   CustomColor.orange: ColorTheme(
@@ -88,7 +88,7 @@ const Map<CustomColor, ColorTheme> _colorThemes = {
     dark: ColorShades(light: 0xFFE0F2FE, main: 0xFFBAE6FD, dark: 0xFF38BDF8),
   ),
   CustomColor.blue: ColorTheme(
-    light: ColorShades(light: 0xFF3B82F6, main: 0xFF1D4ED8, dark: 0xFF1E40AF),
+    light: ColorShades(light: 0xFF3B82F6, main: 0xFF193cb8, dark: 0xFF1E40AF),
     dark: ColorShades(light: 0xFFDBEAFE, main: 0xFFBFDBFE, dark: 0xFF60A5FA),
   ),
   CustomColor.indigo: ColorTheme(
