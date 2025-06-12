@@ -35,9 +35,9 @@ class MyApp extends StatelessWidget {
     return Obx(
       () => MaterialApp.router(
         title: "Tablero de tareas",
-        theme: theme.lightTheme.value,
-        darkTheme: theme.darkTheme.value,
-        themeMode: theme.themeMode,
+        theme: theme.lightTheme,
+        darkTheme: theme.darkTheme,
+        themeMode: theme.themeMode.value,
         routerConfig: router,
         localizationsDelegates: [
           GlobalWidgetsLocalizations.delegate,

@@ -6,13 +6,35 @@ import 'package:tablero_tareas/states/theme_controller.dart';
 import 'package:tablero_tareas/states/user_controller.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final Map<String, Color> _flutterColors = {
+    'Rojo': Colors.red,
+    'Rosa': Colors.pink,
+    'Morado': Colors.purple,
+    'Morado oscuro': Colors.deepPurple,
+    'Índigo': Colors.indigo,
+    'Azul': Colors.blue,
+    'Azul claro': Colors.lightBlue,
+    'Cian': Colors.cyan,
+    'Verde azulado': Colors.teal,
+    'Verde': Colors.green,
+    'Verde claro': Colors.lightGreen,
+    'Lima': Colors.lime,
+    'Amarillo': Colors.yellow,
+    'Ámbar': Colors.amber,
+    'Naranja': Colors.orange,
+    'Naranja oscuro': Colors.deepOrange,
+    'Café': Colors.brown,
+    'Gris': Colors.grey,
+    'Gris azulado': Colors.blueGrey,
+  };
+
   @override
   Widget build(BuildContext context) {
     final user = Get.find<UserController>().user.value;
@@ -31,7 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             Obx(
               () => DropdownButton<ThemeMode>(
-                value: theme.mode.value,
+                value: theme.themeMode.value,
                 items: const [
                   DropdownMenuItem(
                     value: ThemeMode.system,
@@ -48,8 +70,26 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
                 onChanged: (ThemeMode? value) {
                   if (value != null) {
-                    theme.setThemeMode(value);
-                    theme.setPrimaryColor(theme.primaryColor.value)
+                    theme.updateThemeMode(value);
+                  }
+                },
+              ),
+            ),
+            Obx(
+              () => DropdownButton<Color>(
+                value: theme.primaryColor.value,
+                items:
+                    _flutterColors.entries
+                        .map(
+                          (e) => DropdownMenuItem(
+                            value: e.value,
+                            child: Text(e.key),
+                          ),
+                        )
+                        .toList(),
+                onChanged: (Color? color) {
+                  if (color != null) {
+                    theme.updatePrimaryColor(color);
                   }
                 },
               ),
